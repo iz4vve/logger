@@ -8,12 +8,15 @@ import (
 	"github.com/hhkbp2/go-logging"
 )
 
-func GetCustomLogger() logging.Logger {
+func GetCustomLogger(loggerConfig string) logging.Logger {
 	_, filename, _, ok := runtime.Caller(1)
 	if !ok {
 		fmt.Println("Failed to load config.yaml")
 	}
-	config := path.Join(path.Dir(filename), "../logger/config.yaml")
+	if loggerConfig == "" {
+		loggerConfig = "../logger/config.yaml"
+	}
+	config := path.Join(path.Dir(filename), loggerConfig)
 	if err := logging.ApplyConfigFile(config); err != nil {
 		panic(err.Error())
 	}
